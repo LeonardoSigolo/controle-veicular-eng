@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controle Veicular</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topo">
+    <div class="topo-conteudo">
+      <h1>🚗 Controle Veicular</h1>
+      <nav>
+        <button class="aba ativa" data-aba="veiculos">Veículos</button>
+        <button class="aba" data-aba="manutencoes">Manutenções</button>
+        <button class="aba" data-aba="documentos">Documentos</button>
+        <a class="link-swagger" href="/swagger-ui/index.html" target="_blank" rel="noopener">Swagger ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Resumo -->
+    <section class="resumo">
+      <div class="cartao-resumo"><span id="resVeiculos">0</span><small>Veículos</small></div>
+      <div class="cartao-resumo"><span id="resManutencoes">0</span><small>Manutenções</small></div>
+      <div class="cartao-resumo"><span id="resGasto">R$ 0,00</span><small>Gasto total</small></div>
+      <div class="cartao-resumo alerta"><span id="resAlertas">0</span><small>Documentos vencidos ou a vencer (30 dias)</small></div>
+    </section>
+
+    <!-- ================= VEÍCULOS ================= -->
+    <section id="aba-veiculos" class="painel">
+      <div class="cartao">
+        <h2 id="tituloFormVeiculo">Novo veículo</h2>
+        <form id="formVeiculo" autocomplete="off">
+          <input type="hidden" id="veiculoId">
+          <div class="grade">
+            <label>Marca <input id="veiculoMarca" required placeholder="Volkswagen"></label>
+            <label>Modelo <input id="veiculoModelo" required placeholder="Gol 1.0"></label>
+            <label>Ano <input id="veiculoAno" type="number" min="1900" max="2100" required placeholder="2018"></label>
+            <label>Placa <input id="veiculoPlaca" required maxlength="7" placeholder="ABC1D23"></label>
+            <label>Cor <input id="veiculoCor" required placeholder="Prata"></label>
+            <label>Quilometragem <input id="veiculoKm" type="number" min="0" required placeholder="56000"></label>
+            <label>Combustível
+              <select id="veiculoCombustivel" required>
+                <option>Flex</option><option>Gasolina</option><option>Etanol</option>
+                <option>Diesel</option><option>Elétrico</option><option>Híbrido</option><option>GNV</option>
+              </select>
+            </label>
+          </div>
+          <div class="acoes">
+            <button type="submit" class="btn primario" id="btnSalvarVeiculo">Salvar</button>
+            <button type="button" class="btn" id="btnCancelarVeiculo" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="cartao">
+        <h2>Meus veículos</h2>
+        <div class="tabela-wrap">
+          <table>
+            <thead><tr><th>Id</th><th>Veículo</th><th>Ano</th><th>Placa</th><th>Cor</th><th>Km</th><th>Combustível</th><th></th></tr></thead>
+            <tbody id="tbVeiculos"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MANUTENÇÕES ================= -->
+    <section id="aba-manutencoes" class="painel" hidden>
+      <div class="cartao">
+        <h2 id="tituloFormManutencao">Nova manutenção</h2>
+        <form id="formManutencao" autocomplete="off">
+          <input type="hidden" id="manutencaoId">
+          <div class="grade">
+            <label>Veículo <select id="manutencaoVeiculo" required></select></label>
+            <label>Tipo <input id="manutencaoTipo" required list="tiposManutencao" placeholder="Troca de óleo">
+              <datalist id="tiposManutencao">
+                <option>Troca de óleo</option><option>Revisão</option><option>Pneus</option>
+                <option>Freios</option><option>Bateria</option><option>Alinhamento e balanceamento</option>
+                <option>Suspensão</option><option>Correia dentada</option>
+              </datalist>
+            </label>
+            <label>Data <input id="manutencaoData" type="date" required></label>
+            <label>Quilometragem <input id="manutencaoKm" type="number" min="0" required></label>
+            <label>Custo (R$) <input id="manutencaoCusto" type="number" min="0" step="0.01" required></label>
+            <label>Oficina <input id="manutencaoOficina" placeholder="Auto Center Silva"></label>
+            <label>Próxima revisão <input id="manutencaoProxima" type="date"></label>
+            <label class="largo">Descrição <input id="manutencaoDescricao" placeholder="Detalhes do serviço"></label>
+          </div>
+          <div class="acoes">
+            <button type="submit" class="btn primario">Salvar</button>
+            <button type="button" class="btn" id="btnCancelarManutencao" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="cartao">
+        <div class="cabecalho-lista">
+          <h2>Histórico de manutenções</h2>
+          <label class="filtro">Filtrar por veículo <select id="filtroManutencao"></select></label>
+        </div>
+        <div class="tabela-wrap">
+          <table>
+            <thead><tr><th>Data</th><th>Veículo</th><th>Tipo</th><th>Km</th><th>Custo</th><th>Oficina</th><th>Próxima revisão</th><th></th></tr></thead>
+            <tbody id="tbManutencoes"></tbody>
+          </table>
+        </div>
+        <p class="total" id="totalManutencoes"></p>
+      </div>
+    </section>
+
+    <!-- ================= DOCUMENTOS ================= -->
+    <section id="aba-documentos" class="painel" hidden>
+      <div class="cartao">
+        <h2 id="tituloFormDocumento">Novo documento</h2>
+        <form id="formDocumento" autocomplete="off">
+          <input type="hidden" id="documentoId">
+          <div class="grade">
+            <label>Veículo <select id="documentoVeiculo" required></select></label>
+            <label>Tipo
+              <select id="documentoTipo" required>
+                <option>CRLV</option><option>IPVA</option><option>Licenciamento</option>
+                <option>Seguro</option><option>Seguro DPVAT</option><option>Vistoria</option><option>Outro</option>
+              </select>
+            </label>
+            <label>Número / apólice <input id="documentoNumero" required placeholder="AP-2026-889900"></label>
+            <label>Emissão <input id="documentoEmissao" type="date"></label>
+            <label>Vencimento <input id="documentoVencimento" type="date"></label>
+            <label class="largo">Observação <input id="documentoObs" placeholder="Opcional"></label>
+          </div>
+          <div class="acoes">
+            <button type="submit" class="btn primario">Salvar</button>
+            <button type="button" class="btn" id="btnCancelarDocumento" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="cartao">
+        <div class="cabecalho-lista">
+          <h2>Documentação</h2>
+          <label class="filtro">Filtrar por veículo <select id="filtroDocumento"></select></label>
+        </div>
+        <div class="tabela-wrap">
+          <table>
+            <thead><tr><th>Veículo</th><th>Tipo</th><th>Número</th><th>Emissão</th><th>Vencimento</th><th>Situação</th><th></th></tr></thead>
+            <tbody id="tbDocumentos"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="js/app.js"></script>
+</body>
+</html>

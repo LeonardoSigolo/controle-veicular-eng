@@ -1,0 +1,98 @@
+:root {
+  --azul: #1f4e79;
+  --azul-claro: #2f6fa8;
+  --fundo: #f2f5f9;
+  --borda: #d8dee6;
+  --texto: #1d2733;
+  --suave: #5f6c7b;
+  --verde: #1e8e5a;
+  --amarelo: #c98a00;
+  --vermelho: #c0392b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+.topo { background: var(--azul); color: #fff; }
+.topo-conteudo {
+  max-width: 1100px; margin: 0 auto; padding: 14px 20px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+}
+.topo h1 { font-size: 1.3rem; margin: 0; }
+.topo nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+.aba {
+  background: transparent; color: #dbe7f3; border: 0; padding: 8px 14px;
+  border-radius: 6px; cursor: pointer; font-size: .95rem;
+}
+.aba:hover { background: rgba(255,255,255,.12); }
+.aba.ativa { background: #fff; color: var(--azul); font-weight: 600; }
+.link-swagger { color: #dbe7f3; text-decoration: none; padding: 8px 10px; font-size: .9rem; }
+.link-swagger:hover { text-decoration: underline; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+.resumo { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.cartao-resumo {
+  background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cartao-resumo span { font-size: 1.6rem; font-weight: 700; color: var(--azul); }
+.cartao-resumo small { color: var(--suave); }
+.cartao-resumo.alerta span { color: var(--vermelho); }
+
+.cartao { background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 18px; margin-bottom: 18px; }
+.cartao h2 { margin: 0 0 14px; font-size: 1.1rem; }
+
+.grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.grade .largo { grid-column: 1 / -1; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--suave); }
+input, select {
+  padding: 9px 10px; border: 1px solid var(--borda); border-radius: 6px;
+  font-size: .95rem; font-family: inherit; color: var(--texto); background: #fff;
+}
+input:focus, select:focus { outline: 2px solid var(--azul-claro); border-color: transparent; }
+
+.acoes { margin-top: 14px; display: flex; gap: 8px; }
+.btn {
+  padding: 9px 16px; border-radius: 6px; border: 1px solid var(--borda);
+  background: #fff; cursor: pointer; font-size: .9rem; font-family: inherit;
+}
+.btn:hover { background: #eef2f7; }
+.btn.primario { background: var(--azul); color: #fff; border-color: var(--azul); }
+.btn.primario:hover { background: var(--azul-claro); }
+.btn.perigo { color: var(--vermelho); border-color: #e8bdb8; }
+.btn.perigo:hover { background: #fdeceb; }
+.btn.pequeno { padding: 5px 10px; font-size: .8rem; }
+
+.cabecalho-lista { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.cabecalho-lista h2 { margin: 0; }
+.filtro { flex-direction: row; align-items: center; gap: 8px; }
+
+.tabela-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--borda); white-space: nowrap; }
+th { color: var(--suave); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+td.acoes-tabela { display: flex; gap: 6px; }
+.vazio { text-align: center; color: var(--suave); padding: 22px; }
+.total { margin: 12px 0 0; text-align: right; color: var(--suave); }
+.total strong { color: var(--texto); }
+
+.selo { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+.selo.ok { background: #e1f4ea; color: var(--verde); }
+.selo.aviso { background: #fff3d6; color: var(--amarelo); }
+.selo.vencido { background: #fbe3e0; color: var(--vermelho); }
+.selo.neutro { background: #eceff3; color: var(--suave); }
+
+.toast {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+  background: var(--texto); color: #fff; padding: 12px 18px; border-radius: 8px;
+  max-width: 90vw; box-shadow: 0 6px 20px rgba(0,0,0,.25); z-index: 10; font-size: .92rem;
+}
+.toast.erro { background: var(--vermelho); }
